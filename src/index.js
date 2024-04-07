@@ -24,20 +24,24 @@ let urlMovies = "http://localhost:3000/films"
       list.classList.add("film", "item")
       //set the innerHTML
       list.innerHTML= `
-      ${movie.title}`;
+      ${movie.title}
+      <button id="${movie.id}" style ="background-color:lightblue; border:none; margin-left: 10px; border-radius: 30px; width:100px; padding:5px;" >Delete</button>`;
       //append list to the title list
       movieList.appendChild(list);
+      onMovieClick(movie)
       renderMovieDetail(movie)
+      deleteEachMovie(movie)
     })
-    firstMovie(data[0])
+    
+     firstMovie(data[0])
   })
  }
  //call the function to fetch movie data and render film titles
- getMovies();
+getMovies();
 
 // a reusable function to render the movie detail
 function renderMovieDetail(movie){
-  availableTickets.textContent = movie.capacity - movie.ticket_sold;
+  availableTickets.textContent = `${movie.capacity - movie.ticket_sold}`;
   poster.src = movie.poster;
   poster.alt = movie.title;
   movieTitle.textContent = movie.title;
@@ -48,7 +52,36 @@ function renderMovieDetail(movie){
   buyTicketBtn.textContent = availableTickets === 0? "Sold Out": "Buy ticket";
 
 }
-//// render the first movie
-function firstMovie(movieData){
-  renderMovieDetail(movieData)
+
+function firstMovie(movie){
+  // render the first movie
+  renderMovieDetail(movie)
+}
+
+//add event to get specific information upon clicking
+function onMovieClick(movie){
+  //grab the movie details by id and add a click event
+  const movieDetail = document.getElementById(movie.id);
+  movieDetail.addEventListener("click", ()=>{
+    renderMovieDetail(movie)
+  })
+}
+//define a function 
+function deleteEachMovie(movie){
+  const deleteButton = document.getElementById(`${movie.id}`);
+  deleteButton.addEventListener("click", ()=>{
+    fetch(`${urlMovies}/${movie.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    })
+   .then(res=>res.json())
+   .then((data)=>console.log(data)
+    )
+    .catch((err)=>{
+      alert(err)
+    });
+  });
 }
