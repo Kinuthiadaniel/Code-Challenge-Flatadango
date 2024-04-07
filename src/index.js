@@ -49,13 +49,18 @@ function renderMovieDetail(movie) {
   showTime.textContent = movie.showtime;
   // capture the available tickets and set the text buttons accordingly
   buyTicketBtn.textContent = availableTickets === 0 ? "Sold Out" : "Buy ticket";
-
+  // if (availableTickets.textContent == 0) {
+  //   buyTicketBtn.textContent = "Sold Out"
+  // } else { buyTicketBtn.textContent = "Buy Ticket" }
 }
 
 function firstMovie(movie) {
   // render the first movie
   renderMovieDetail(movie)
   purchaseTicket(movie)
+  if (availableTickets.textContent == 0) {
+    buyTicketBtn.textContent = "Sold Out"
+  } else { buyTicketBtn.textContent = "Buy Ticket" }
 }
 
 //add event to get specific information upon clicking
@@ -65,8 +70,12 @@ function onMovieClick(movies) {
   movieDetail.addEventListener("click", () => {
     renderMovieDetail(movies)
     purchaseTicket(movies)
+    // if (availableTickets.textContent == 0) {
+    //   buyTicketBtn.textContent = "Sold Out"
+    // }else { buyTicketBtn.textContent = "Buy Ticket"}
   })
- }
+
+}
 
 //define a function that deletes the movie
 function deleteEachMovie(movie) {
@@ -83,19 +92,18 @@ function deleteEachMovie(movie) {
       .then((data) => console.log(data)
       )
       .catch((err) => {
-        alert(err)
+        alert(err.message);
       });
   });
 }
-
+//define a function that handles the buy ticket button
 function purchaseTicket(movies) {
   buyTicketBtn.onclick = () => {
+    //checks if the number of tickets is greater than and incrementsand decrements the available tickets and tickets sold respectively
     if (availableTickets.textContent > 0) {
       availableTickets.textContent--
-      // if(availableTickets.textContent === 0){
-      //   buyTicketBtn.textContent = "Sold Out"
-      // }
       movies.tickets_sold++;
+      //fetches data from the database and updates the tickets sold uses patch method
       fetch(`${urlMovies}/${movies.id}`,
         {
           method: "PATCH",
@@ -107,26 +115,28 @@ function purchaseTicket(movies) {
             tickets_sold: movies.tickets_sold
           })
         })
-        .then((res)=>res.json())
+        // uses the data object to check available tickets and switch the button inner text
+        .then((res) => res.json())
         .then((data) => {
-          availableTickets.textContent =`${data.capacity - data.tickets_sold}`
-          if(availableTickets.textContent === 0){
+          availableTickets.textContent = `${data.capacity - data.tickets_sold}`
+          if (availableTickets.textContent === 0) {
             buyTicketBtn.textContent = "Sold Out"
           }
         });
-        fetch("http://localhost:3000/ticket",{
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify({
-            film_id: movies.id,
-            number_of_tickets: 1
-          })
+        // update an empty list of tickets using post method
+      fetch("http://localhost:3000/ticket", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          film_id: movies.id,
+          number_of_tickets: 1
         })
-        .catch(err => alert(err.message) )
-        
+      })
+        .catch(err => alert(err.message))
+
     };
 
   }
