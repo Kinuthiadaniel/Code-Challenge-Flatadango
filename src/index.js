@@ -25,19 +25,18 @@ let urlMovies = "http://localhost:3000/films"
       //set the innerHTML
       list.innerHTML= `
       ${movie.title}
-      <button id="${movie.id}" style ="background-color:lightblue; border:none; margin-left: 10px; border-radius: 30px; width:100px; padding:5px;" >Delete</button>`;
+      <button id="k${movie.id}" style ="background-color:lightblue; border:none; margin-left: 10px; border-radius: 30px; width:100px; padding:5px;" >Delete</button>`;
       //append list to the title list
       movieList.appendChild(list);
       onMovieClick(movie)
-      renderMovieDetail(movie)
-      deleteEachMovie(movie)
+     deleteEachMovie(movie)
     })
-    
-     firstMovie(data[0])
-  })
+      firstMovie(data[0])
+      
+   })
  }
  //call the function to fetch movie data and render film titles
-getMovies();
+ getMovies();
 
 // a reusable function to render the movie detail
 function renderMovieDetail(movie){
@@ -59,16 +58,17 @@ function firstMovie(movie){
 }
 
 //add event to get specific information upon clicking
-function onMovieClick(movie){
+function onMovieClick(movies){
   //grab the movie details by id and add a click event
-  const movieDetail = document.getElementById(movie.id);
+  const movieDetail = document.getElementById(`${movies.id}`);
   movieDetail.addEventListener("click", ()=>{
-    renderMovieDetail(movie)
+    renderMovieDetail(movies)
   })
-}
-//define a function 
+ }
+
+//define a function that deletes the movie
 function deleteEachMovie(movie){
-  const deleteButton = document.getElementById(`${movie.id}`);
+  const deleteButton = document.getElementById(`k${movie.id}`);
   deleteButton.addEventListener("click", ()=>{
     fetch(`${urlMovies}/${movie.id}`, {
       method: "DELETE",
@@ -85,3 +85,4 @@ function deleteEachMovie(movie){
     });
   });
 }
+
