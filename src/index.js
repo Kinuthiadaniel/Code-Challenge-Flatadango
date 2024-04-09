@@ -58,7 +58,7 @@ function firstMovie(movie) {
   // render the first movie
   renderMovieDetail(movie)
   purchaseTicket(movie)
-  if (availableTickets.textContent == 0) {
+  if (availableTickets.textContent === 0) {
     buyTicketBtn.textContent = "Sold Out"
   } else { buyTicketBtn.textContent = "Buy Ticket" }
 }
@@ -70,9 +70,9 @@ function onMovieClick(movies) {
   movieDetail.addEventListener("click", () => {
     renderMovieDetail(movies)
     purchaseTicket(movies)
-    // if (availableTickets.textContent == 0) {
-    //   buyTicketBtn.textContent = "Sold Out"
-    // }else { buyTicketBtn.textContent = "Buy Ticket"}
+    if (availableTickets.textContent == 0) {
+      buyTicketBtn.textContent = "Sold Out"
+    }else { buyTicketBtn.textContent = "Buy Ticket"}
   })
 
 }
@@ -119,7 +119,7 @@ function purchaseTicket(movies) {
         .then((res) => res.json())
         .then((data) => {
           availableTickets.textContent = `${data.capacity - data.tickets_sold}`
-          if (availableTickets.textContent === 0) {
+          if (availableTickets.textContent == 0) {
             buyTicketBtn.textContent = "Sold Out"
           }
         });
