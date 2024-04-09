@@ -9,7 +9,7 @@ const availableTickets = document.getElementById("ticket-num");
 const buyTicketBtn = document.querySelector("div button");
 
 //declare a variable to store films URL
-let urlMovies = "http://localhost:3000/films"
+let urlMovies = "https://json-server1-f66c.onrender.com/films"
 // fetch and list movies
 function getMovies() {
   movieList.innerHTML = ""// removes default list
@@ -124,7 +124,7 @@ function purchaseTicket(movies) {
           }
         });
         // update an empty list of tickets using post method
-      fetch("http://localhost:3000/ticket", {
+      fetch("https://json-server1-f66c.onrender.com/ticket", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
