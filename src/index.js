@@ -25,7 +25,8 @@ function getMovies() {
         //set the innerHTML
         list.innerHTML = `
       ${movie.title}
-      <button id="k${movie.id}" style ="background-color:lightblue; border:none; margin-left: 10px; border-radius: 30px; width:100px; padding:5px;" >Delete</button>`;
+      <button id="k${movie.id}" style ="background-color:lightblue; border:none; margin-left: 
+      10px; border-radius: 30px; width:100px; padding:5px;" >Delete</button>`;
         //append list to the title list
         movieList.appendChild(list);
         onMovieClick(movie)
